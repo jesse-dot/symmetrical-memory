@@ -1,0 +1,26 @@
+# Example systemd service file for running the Discord Windows Control Tool
+# This is useful if you want to run the tool as a background service
+# 
+# Installation:
+# 1. Edit this file and update the paths to match your installation
+# 2. Copy to /etc/systemd/system/discord-control.service
+# 3. Run: sudo systemctl daemon-reload
+# 4. Run: sudo systemctl enable discord-control
+# 5. Run: sudo systemctl start discord-control
+# 6. Check status: sudo systemctl status discord-control
+
+[Unit]
+Description=Discord Windows Control Tool
+After=network.target
+
+[Service]
+Type=simple
+User=youruser
+WorkingDirectory=/path/to/symmetrical-memory
+Environment="PATH=/path/to/venv/bin"
+ExecStart=/path/to/venv/bin/python main.py
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
