@@ -104,6 +104,11 @@ HTML_TEMPLATE = """
 def generate_frames():
     """Generate frames for MJPEG streaming."""
     with mss.mss() as sct:
+        # Validate that monitors are available
+        if len(sct.monitors) < 2:
+            print("Error: No monitors detected for streaming!")
+            return
+        
         monitor = sct.monitors[1]  # Primary monitor
         
         while True:
@@ -112,9 +117,10 @@ def generate_frames():
                 screenshot = sct.grab(monitor)
                 img = Image.frombytes('RGB', screenshot.size, screenshot.bgra, 'raw', 'BGRX')
                 
-                # Resize for better streaming performance (optional)
-                # Uncomment the next line to resize to 1280x720
+                # Optional: Resize for better streaming performance
+                # Enable this if you experience lag or want to reduce bandwidth
                 # img.thumbnail((1280, 720), Image.Resampling.LANCZOS)
+                # Note: This reduces quality but improves streaming speed on slower networks
                 
                 # Convert to JPEG bytes
                 img_bytes = io.BytesIO()

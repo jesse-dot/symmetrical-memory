@@ -42,27 +42,23 @@ def test_dependencies():
     """Test that all required dependencies are available."""
     print("\nTesting dependencies...")
     
-    required_packages = [
-        'discord',
-        'flask',
-        'PIL',
-        'mss',
-        'pyautogui',
-        'dotenv'
-    ]
+    # Map package names to their import names
+    package_mapping = {
+        'discord': 'discord',
+        'flask': 'flask',
+        'pillow': 'PIL',
+        'mss': 'mss',
+        'pyautogui': 'pyautogui',
+        'python-dotenv': 'dotenv'
+    }
     
     all_available = True
-    for package in required_packages:
+    for package_name, import_name in package_mapping.items():
         try:
-            if package == 'PIL':
-                import PIL
-            elif package == 'dotenv':
-                import dotenv
-            else:
-                __import__(package)
-            print(f"✓ {package} is available")
+            __import__(import_name)
+            print(f"✓ {package_name} ({import_name}) is available")
         except ImportError:
-            print(f"✗ {package} is NOT available")
+            print(f"✗ {package_name} ({import_name}) is NOT available")
             all_available = False
     
     return all_available

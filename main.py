@@ -4,6 +4,7 @@ Runs both the Discord bot and web server concurrently.
 """
 
 import threading
+import time
 import os
 from dotenv import load_dotenv
 from discord_bot import run_bot
@@ -32,7 +33,6 @@ def main():
     print("✅ Web server started")
     
     # Give the web server a moment to start
-    import time
     time.sleep(2)
     
     print("✅ Starting Discord bot...")

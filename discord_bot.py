@@ -22,8 +22,11 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD_ID = os.getenv('DISCORD_GUILD_ID')
 
-# Disable pyautogui fail-safe for server use
-pyautogui.FAILSAFE = False
+# PyAutoGUI safety configuration
+# FAILSAFE is enabled by default - moving mouse to corner stops automation
+# This is a safety feature to prevent runaway automation
+pyautogui.FAILSAFE = True  # Keep enabled for safety
+pyautogui.PAUSE = 0.1  # Add a small pause between PyAutoGUI calls
 
 # Initialize bot with necessary intents
 intents = discord.Intents.default()
@@ -59,6 +62,11 @@ async def screenshot(interaction: discord.Interaction):
     try:
         # Capture screenshot using mss (faster than pyautogui)
         with mss.mss() as sct:
+            # Validate that monitors are available
+            if len(sct.monitors) < 2:
+                await interaction.followup.send("❌ No monitors detected!")
+                return
+            
             monitor = sct.monitors[1]  # Primary monitor
             screenshot_data = sct.grab(monitor)
             img = Image.frombytes('RGB', screenshot_data.size, screenshot_data.bgra, 'raw', 'BGRX')
