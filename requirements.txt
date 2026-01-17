@@ -1,0 +1,6 @@
+discord.py>=2.3.2
+flask>=3.0.0
+pillow>=10.0.0
+mss>=9.0.1
+pyautogui>=0.9.54
+python-dotenv>=1.0.0
